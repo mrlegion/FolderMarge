@@ -4,9 +4,22 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FolderMarge"
+        xmlns:dnd="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.WPF.DragDrop"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
+        Title="Folder Marge Manager v0.2.0b" Height="350" Width="600" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+
+    <Window.DataContext>
+        <local:MainWindowViewModel/>
+    </Window.DataContext>
+
+    <Grid IsEnabled="{Binding NotWork}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="1.3*"/>
+        </Grid.ColumnDefinitions>
+
+        <local:BrowseFolder Grid.Column="0" Grid.Row="0" Margin="10 0" AllowDrop="True"
+                            dnd:DragDrop.IsDropTarget="True" dnd:DragDrop.DropHandler="{Binding}"/>
+        <local:MargeFolderBlock x:Name="FolderBlock" Grid.Column="1" Grid.Row="0" Margin="10 0" DockPanel.Dock="Top"/>
     </Grid>
 </Window>

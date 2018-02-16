@@ -1,0 +1,54 @@
+﻿<UserControl x:Class="FolderMarge.MargeFolderBlock"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FolderMarge"
+             mc:Ignorable="d" 
+             d:DesignHeight="350" d:DesignWidth="300">
+    <UserControl.Resources>
+        <local:StringToBoolConverter x:Key="StringToBoolConverter"/>
+        <local:BoolToIntConverter x:Key="BoolToIntConverter"/>
+    </UserControl.Resources>
+
+    <DockPanel d:DataContext="{d:DesignInstance {x:Type local:MainWindowViewModel}}">
+        <Label DockPanel.Dock="Top" Content="Setup Merges Folder:" FontSize="18"/>
+        <GroupBox DockPanel.Dock="Top" Header="Naming:" Margin="0 5"  Foreground="Gray">
+            <TextBox Name="NewFolderName" Margin="5" VerticalContentAlignment="Center" 
+                     Padding="10 0" Height="35" Text="{Binding FolderName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+            
+        </GroupBox>
+        <GroupBox Header="Moving file Setup:" DockPanel.Dock="Top" Margin="0 5" Foreground="Gray">
+            <Grid Margin="5 10 5 5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="35"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <ComboBox Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Foreground="DarkSlateGray" 
+                          Background="WhiteSmoke" Name="Operation"
+                          VerticalContentAlignment="Center" Padding="10 0" 
+                          SelectedIndex="{Binding IsCopy, Converter={StaticResource BoolToIntConverter}}">
+                    <ComboBoxItem>Copy files to new folder</ComboBoxItem>
+                    <ComboBoxItem>Cut and move files to new folder</ComboBoxItem>
+                </ComboBox>
+
+                <CheckBox Name="Deleted" IsChecked="{Binding IsDeleted}" Grid.Column="0" Grid.Row="1" 
+                          Content="Deleted old folders?" Margin="0 15 0 0" Grid.ColumnSpan="2"/>
+            </Grid>
+        </GroupBox>
+
+        <ProgressBar DockPanel.Dock="Top" Height="20" Margin="10 10 10 0"
+                     Visibility="{Binding ProgressShow}" 
+                     Value="{Binding Progress, Mode=OneWay}"/>
+
+        <Button IsEnabled="{Binding ElementName=NewFolderName, Path=Text, Converter={StaticResource StringToBoolConverter}}" 
+                Height="35" Margin="10" DockPanel.Dock="Bottom" VerticalAlignment="Bottom" Content="Marge this Folders!"
+                Command="{Binding MargeCommand}"/>
+    </DockPanel>
+</UserControl>
